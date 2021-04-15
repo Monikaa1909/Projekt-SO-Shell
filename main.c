@@ -16,13 +16,17 @@ void loop(){
         printf("> ");
         line = read_line();
         args = split_line(line, " ");
-        args = tokenize(args, "|");
-        //args = tokenize(args, ">");
-
-        for(int j = 0; j < sizeof(args) * sizeof(char*); j++){
-            if(args[j]!=NULL)printf("%s,", args[j]);
+        printf("Po splitline:");
+        int j = 0;
+        while(args[j]!=NULL){
+            printf("%s,", args[j]);
+            j++;
         }
         printf("\n");
+
+        args = tokenize(args, "|");
+        args = tokenize(args, ">");
+
 
         status = execute(args);
 
