@@ -13,6 +13,7 @@ char** split_line(char* line, char* delimeter){
     int buffer_size = SPLIT_TOKEN_BUFSIZE;
     char** tokens = malloc(sizeof(char*) * buffer_size);
     char* token;
+
     if(!tokens){
         fprintf(stderr, "Blad alokacji\n");
         exit(EXIT_FAILURE);
@@ -43,7 +44,7 @@ char** split_line(char* line, char* delimeter){
 
 // dzieli wczytaną linię na listę argumentów
 char** tokenize(char** tokens, char* delimeter){
-    int buffer_size = sizeof(tokens);
+    int buffer_size = SPLIT_TOKEN_BUFSIZE;
     char** newtokens = malloc(sizeof(char*) * buffer_size);
     char* token;
 
@@ -53,26 +54,49 @@ char** tokenize(char** tokens, char* delimeter){
     }
 
     int i = 0;
-    for(int j = 0; j < sizeof(tokens) * sizeof(char*); j++){
-        if(tokens[j] != NULL){
-            token = strtok(tokens[j], delimeter);
-            newtokens[i++] = token;
+//    for(int j = 0; j < sizeof(tokens); j++){
+//        if(tokens[j] != NULL){
+//            token = strtok(tokens[j], delimeter);
+//            newtokens[i++] = token;
+//
+//            token = strtok(NULL, delimeter);
+//            while(token != NULL){
+//                if(i + 2 >= buffer_size){
+//                    buffer_size += SPLIT_TOKEN_BUFSIZE;
+//                    newtokens = realloc(tokens, sizeof(char*) * buffer_size);
+//                    if(!token) {
+//                        fprintf(stderr, "Blad alokacji\n");
+//                        exit(EXIT_FAILURE);
+//                    }
+//                }
+//                newtokens[i++] = delimeter;
+//                newtokens[i++] = token;
+//                token = strtok(NULL, delimeter);
+//            }
+//        }
+//    }
 
-            token = strtok(NULL, delimeter);
-            while(token != NULL){
-                if(i + 2 >= buffer_size){
-                    buffer_size += SPLIT_TOKEN_BUFSIZE;
-                    newtokens = realloc(tokens, sizeof(char*) * buffer_size);
-                    if(!token) {
-                        fprintf(stderr, "Blad alokacji\n");
-                        exit(EXIT_FAILURE);
-                    }
+
+    int j = 0;
+    while(tokens[j] != NULL){
+        token = strtok(tokens[j], delimeter);
+        newtokens[i++] = token;
+
+        token = strtok(NULL, delimeter);
+        while(token != NULL){
+            if(i + 2 >= buffer_size){
+                buffer_size += SPLIT_TOKEN_BUFSIZE;
+                newtokens = realloc(tokens, sizeof(char*) * buffer_size);
+                if(!token) {
+                    fprintf(stderr, "Blad alokacji\n");
+                    exit(EXIT_FAILURE);
                 }
-                newtokens[i++] = delimeter;
-                newtokens[i++] = token;
-                token = strtok(NULL, delimeter);
             }
+            newtokens[i++] = delimeter;
+            newtokens[i++] = token;
+            token = strtok(NULL, delimeter);
         }
+        j++;
     }
 
 //    printf("Tokens: ");
@@ -83,4 +107,3 @@ char** tokenize(char** tokens, char* delimeter){
 
     return newtokens;
 }
-
