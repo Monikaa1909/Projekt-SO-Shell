@@ -1,1 +1,0 @@
-# Projekt-SO-Shell
